@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom'
 import './Login.css'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { PersonLogin } from '../../types/Person'
 import { AxiosBaseURL, COOKIE_NAME } from '../../hooks/AppConfig'
 import ErrorHandling from '../ErrorHandler/ErrorHandling'
@@ -20,6 +20,7 @@ export default function Login() {
                 Cookies.remove(COOKIE_NAME)
                 Cookies.set(COOKIE_NAME, token, { expires: 1, secure: true })
             }
+            Cookies.set(COOKIE_NAME, token, { expires: 1, secure: true })
             navigate("/users")
         } catch (error) {
             ErrorHandling(error)
@@ -34,6 +35,11 @@ export default function Login() {
         })
         loginPerson()
     }
+
+    useEffect(() => {
+        window.document.title = 'Login'
+        Cookies.remove(COOKIE_NAME)
+    }, [])
 
     return (
         <div className='login-main'>

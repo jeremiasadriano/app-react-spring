@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Person } from "../../types/Person";
 import { AxiosBaseURL, COOKIE_NAME } from "../../hooks/AppConfig";
@@ -18,6 +18,10 @@ export default function Register() {
         try {
             const response = await AxiosBaseURL.post('register', personData)
             const { token } = response.data
+            if (Cookies.get(COOKIE_NAME) != "" || Cookies.get(COOKIE_NAME) != null) {
+                Cookies.remove(COOKIE_NAME)
+                Cookies.set(COOKIE_NAME, token, { expires: 1, secure: true })
+            }
             Cookies.set(COOKIE_NAME, token, { expires: 1, secure: true })
             navigate("/users")
         } catch (error) {
@@ -41,6 +45,11 @@ export default function Register() {
         })
         registerPerson()
     }
+
+    useEffect(() => {
+        window.document.title = 'Register'
+        Cookies.remove(COOKIE_NAME)
+    }, [])
 
     return (
         <div className='login-main'>
