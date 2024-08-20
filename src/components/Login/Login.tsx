@@ -1,19 +1,19 @@
 import { Link, useNavigate } from "react-router-dom";
 import "./Login.css";
 import { useEffect, useState } from "react";
-import { Person, PersonLogin } from "../../types/Person";
-import { AxiosBaseURL, COOKIE_NAME } from "../../hooks/AppConfig";
+import { IPerson, IPersonLogin, IPersonResponse } from "../../types/Person";
+import { api, COOKIE_NAME, postData } from "../../hooks/AppConfig";
 import ErrorHandling from "../ErrorHandler/ErrorHandling";
 import Cookies from "js-cookie";
 export default function Login() {
-  const [personData, setPersonData] = useState<PersonLogin | null>(null);
+  const [personData, setPersonData] = useState<IPersonLogin | null>(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
   async function loginPerson() {
     try {
-      await AxiosBaseURL.post("/login", personData);
+      await postData<IPersonResponse>("/login", personData).then((resp) => console.log(resp.token));
       navigate("/users");
     } catch (error) {
       ErrorHandling(error);
@@ -22,10 +22,7 @@ export default function Login() {
 
   function formLogin(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setPersonData({
-      email: email,
-      password: password,
-    });
+    setPersonData({ email: email, password: password });
     loginPerson();
   }
 

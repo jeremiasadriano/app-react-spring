@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
-import { Person } from "../../types/Person";
-import { AxiosBaseURL, COOKIE_NAME } from "../../hooks/AppConfig";
+import { IPerson } from "../../types/Person";
+import { api, COOKIE_NAME } from "../../hooks/AppConfig";
 import Cookies from "js-cookie";
 
 export default function ListUser() {
-  const [users, setUsers] = useState<Person[] | null>(null);
+  const [users, setUsers] = useState<IPerson[] | null>(null);
   const token = Cookies.get(COOKIE_NAME);
 
   async function fetchUsers() {
     try {
-      const response = await AxiosBaseURL.get("/manager");
+      const response = await api.get("/manager");
       const { data }: any = await response;
       setUsers(data);
     } catch (error) {}
