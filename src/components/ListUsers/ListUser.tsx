@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
 import { IPerson } from "../../types/Person";
-import { api, COOKIE_NAME } from "../../hooks/AppConfig";
-import Cookies from "js-cookie";
+import { api } from "../../hooks/AppConfig";
 
 export default function ListUser() {
   const [users, setUsers] = useState<IPerson[] | null>(null);
-  const token = Cookies.get(COOKIE_NAME);
 
   async function fetchUsers() {
     try {

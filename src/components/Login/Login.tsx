@@ -1,10 +1,10 @@
-import { Link, useNavigate } from "react-router-dom";
-import "./Login.css";
-import { useEffect, useState } from "react";
-import { IPerson, IPersonLogin, IPersonResponse } from "../../types/Person";
-import { api, COOKIE_NAME, postData } from "../../hooks/AppConfig";
-import ErrorHandling from "../ErrorHandler/ErrorHandling";
 import Cookies from "js-cookie";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { api, COOKIE_NAME, postData } from "../../hooks/AppConfig";
+import { IPersonLogin, IPersonResponse } from "../../types/Person";
+import ErrorHandling from "../ErrorHandler/ErrorHandling";
+import "./Login.css";
 export default function Login() {
   const [personData, setPersonData] = useState<IPersonLogin | null>(null);
   const [email, setEmail] = useState("");
@@ -13,7 +13,10 @@ export default function Login() {
 
   async function loginPerson() {
     try {
-      await postData<IPersonResponse>("/login", personData).then((resp) => console.log(resp.token));
+      await postData<IPersonResponse>("/login", personData).then((resp) => {
+        api.defaults.headers.Authorization = `Bearer ${resp.token}`;
+        Cookies.set(COOKIE_NAME, resp.token);
+      });
       navigate("/users");
     } catch (error) {
       ErrorHandling(error);
