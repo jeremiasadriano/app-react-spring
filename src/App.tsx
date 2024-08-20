@@ -1,27 +1,6 @@
-import { RouterProvider, createBrowserRouter } from "react-router-dom"
-import Login from "./components/Login/Login"
-import Register from "./components/register/Register"
-import ListUser from "./components/ListUsers/ListUser"
+import { RouterProvider } from "react-router-dom";
+import { router } from "./routes";
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <ListUser />
-  },
-  {
-    path: '/login',
-    element: <Login />
-  },
-  {
-    path: '/register',
-    element: <Register />
-  }, {
-    path: "/users",
-    element: <ListUser />
-  }
-])
 export default function App() {
-  return (
-    <RouterProvider router={router} />
-  )
+  return <RouterProvider router={router} />;
 }
